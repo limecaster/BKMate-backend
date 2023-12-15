@@ -13,9 +13,16 @@ import { ClubsService } from './clubs/clubs.service';
 import { UsersService } from './users/users.service';
 import { BuildingsService } from './buildings/buildings.service';
 import { JobEventsService } from './job-events/job-events.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [BuildingsModule, ClubsModule, UsersModule, JobEventsModule],
+  imports: [
+    BuildingsModule,
+    ClubsModule,
+    UsersModule,
+    JobEventsModule,
+    AuthModule,
+  ],
   controllers: [
     AppController,
     ClubsController,
