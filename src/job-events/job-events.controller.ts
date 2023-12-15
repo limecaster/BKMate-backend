@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { JobEventsService } from './job-events.service';
 import { CreateJobEventDto } from './dto/create-job-event.dto';
 import { UpdateJobEventDto } from './dto/update-job-event.dto';
@@ -22,8 +30,11 @@ export class JobEventsController {
     return this.jobEventsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobEventDto: UpdateJobEventDto) {
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateJobEventDto: UpdateJobEventDto,
+  ) {
     return this.jobEventsService.update(+id, updateJobEventDto);
   }
 
