@@ -62,6 +62,7 @@ export class JobEventsService {
       createdBy: 'admin',
     },
   ];
+
   create(createJobEventDto: CreateJobEventDto) {
     const newJobEvent = {
       id: this.jobEvents.length + 1,
