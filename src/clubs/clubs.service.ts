@@ -16,7 +16,8 @@ export class ClubsService {
     {
       id: 2,
       name: 'CEAC',
-      description: 'CLB học thuật ngành Kỹ thuật Máy tính - CEAC ',
+      description:
+        'Đến với CEAC, các bạn sẽ có cơ hội: Có thêm môi trường học tập, rèn luyện lành mạnh, bổ ích. Gặp gỡ, giao lưu với những người bạn có cùng niềm yêu thích với ngành Kỹ thuật Máy tính. Được hướng dẫn, hỗ trợ về kiến thức và kỹ năng từ các mentor có chuyên môn theo kế hoạch hoạt động của Câu lạc bộ. Được tham gia tổ chức các cuộc thi, các sự kiện do câu lạc bộ triển khai. Tham gia ngay: bit.ly/CEAC_tuyenquan2023_form',
       image:
         'https://scontent.fsgn19-1.fna.fbcdn.net/v/t39.30808-6/271927824_106879355234337_5150991607191174093_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGI0Cipwo6TZwSYvROq_RQTaLhmakFXM4VouGZqQVczhQ9I0HTHOW2rhjvKmMvvo-PEueSOEyz4_-WEUpwZ-Eil&_nc_ohc=lakwVlbXr3EAX9QcZ4v&_nc_ht=scontent.fsgn19-1.fna&oh=00_AfDDvGi6XsoCgerjn_zoTM8uXMAt-YJM93ZaoIYa0x5Wgw&oe=65834D64',
       contact: 'https://www.facebook.com/ceac.hcmut',

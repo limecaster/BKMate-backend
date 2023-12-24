@@ -12,6 +12,9 @@ export class UsersService {
       name: 'Đỗ Văn Bâng',
       studentId: '20173281',
       email: 'example1@gmail.com',
+      phoneNumber: '0123456789',
+      class: 'MT21KH08',
+      major: 'Khoa học máy tính',
       password: '123456',
       isDeleted: false,
     },
@@ -20,6 +23,9 @@ export class UsersService {
       name: 'Khưu Vĩ Lương',
       studentId: '20173282',
       email: 'example2@gmail.com',
+      phoneNumber: '0123456789',
+      class: 'MT21KH08',
+      major: 'Khoa học máy tính',
       password: '123456',
       isDeleted: false,
     },
@@ -28,6 +34,9 @@ export class UsersService {
       name: 'Lê Rin',
       studentId: '20173283',
       email: 'example3@gmail.com',
+      phoneNumber: '0123456789',
+      class: 'MT21KH08',
+      major: 'Khoa học máy tính',
       password: '123456',
       isDeleted: false,
     },
@@ -38,6 +47,9 @@ export class UsersService {
       name: 'Nguyen Van A',
       studentId: '20000000',
       email: createUserDto.email,
+      phoneNumber: '0123456789',
+      class: 'MT21KH08',
+      major: 'Khoa học máy tính',
       password: createUserDto.password,
       isDeleted: false,
     };
@@ -68,6 +80,10 @@ export class UsersService {
     user.name = updateUserDto.name;
     user.password = updateUserDto.password;
     user.studentId = updateUserDto.studentId;
+    user.email = updateUserDto.email;
+    user.phoneNumber = updateUserDto.phoneNumber;
+    user.class = updateUserDto.class;
+    user.major = updateUserDto.major;
 
     return `This action updates a #${id} user`;
   }
