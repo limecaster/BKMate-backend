@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('profile')
+  @Get('/profile')
   @ApiResponse({ status: 200, description: 'Get profile successfully' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async getProfile(@Request() req) {
