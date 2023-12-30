@@ -18,6 +18,10 @@ export class UsersController {
 
   @Post()
   @ApiResponse({ status: 201, description: 'Create user successfully' })
+  @ApiResponse({
+    status: 400,
+    description: 'Email and password should not be empty.',
+  })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

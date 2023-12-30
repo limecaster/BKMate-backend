@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -42,6 +42,17 @@ export class UsersService {
     },
   ];
   create(createUserDto: CreateUserDto) {
+    if (!createUserDto.email || !createUserDto.password) {
+      throw new HttpException(
+        'Email and password should not be empty.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const user = this.users.find((user) => user.email === createUserDto.email);
+    if (user) {
+      throw new HttpException('Email already exists.', HttpStatus.BAD_REQUEST);
+    }
     const newUser = {
       id: this.users.length + 1,
       name: 'Nguyen Van A',
