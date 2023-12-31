@@ -1,11 +1,17 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
-export type User = any;
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+
   private users = [
     {
       id: 1,
@@ -49,7 +55,7 @@ export class UsersService {
       );
     }
 
-    const user = this.users.find((user) => user.email === createUserDto.email);
+    const user = this.usersRepository.findOneBy({ email: createUserDto.email });
     if (user) {
       throw new HttpException('Email already exists.', HttpStatus.BAD_REQUEST);
     }
@@ -64,13 +70,13 @@ export class UsersService {
       password: createUserDto.password,
       isDeleted: false,
     };
-    this.users.push(newUser);
+    this.usersRepository.save(newUser);
     return 'Add user successfully';
   }
 
-  async findAll(): Promise<User | undefined> {
+  async findAll(): Promise<User[] | undefined> {
     // return this.users;
-    return this.users.filter((user) => user.isDeleted == false);
+    return this.usersRepository.find();
   }
 
   async findOne(id: number): Promise<User | undefined> {
@@ -78,33 +84,37 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
-    return this.users.find(
-      (user) => user.email === email && user.isDeleted == false,
-    );
+    return this.usersRepository.findOneBy({
+      email: email,
+      isDeleted: false,
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = this.users.find((user) => user.id === id);
-    if (!user) {
-      return 'User not found';
+    if (!updateUserDto.email || !updateUserDto.password) {
+      throw new HttpException(
+        'Email and password should not be empty.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    user.name = updateUserDto.name;
-    user.password = updateUserDto.password;
-    user.studentId = updateUserDto.studentId;
-    user.email = updateUserDto.email;
-    user.phoneNumber = updateUserDto.phoneNumber;
-    user.class = updateUserDto.class;
-    user.major = updateUserDto.major;
+    const user = this.usersRepository.findOneBy({
+      id: id,
+      isDeleted: false,
+    });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+    this.usersRepository.update(id, updateUserDto);
 
     return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
-    const user = this.users.find((user) => user.id === id);
+    const user = this.usersRepository.findOneBy({ id: id, isDeleted: false });
     if (!user) {
       return 'User not found';
     }
-    user.isDeleted = true;
+    this.usersRepository.update(id, { isDeleted: true });
     return `User which is = #${id} is deleted`;
   }
 }

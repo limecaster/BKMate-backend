@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClubsController } from './clubs/clubs.controller';
@@ -26,6 +27,19 @@ import { ClubEventsModule } from './club-events/club-events.module';
     AuthModule,
     SchoolModule,
     ClubEventsModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'dpg-cm87j3un7f5s73cf11l0-a.postgres.render.com',
+      port: 5432,
+      username: 'pencilsoldier',
+      password: 'Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3',
+      database: 'bkmate',
+      synchronize: true, // Auto-create database schema (for development only)
+      logging: true, // Enable logging (for development only)
+      entities: [
+        /* your entities here */
+      ],
+    }),
   ],
   controllers: [
     AppController,
