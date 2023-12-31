@@ -45,7 +45,7 @@ import { SchoolAcademicProgram } from './school/entities/school-academicProgram.
     ClubEventsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'dpg-cm87j3un7f5s73cf11l0-a.postgres.render.com',
+      host: 'postgres://pencilsoldier:Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3@dpg-cm87j3un7f5s73cf11l0-a/bkmate',
       port: 5432,
       username: 'pencilsoldier',
       password: 'Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3',
