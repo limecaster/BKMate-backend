@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Building } from './entities/building.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BuildingsService {
+  constructor(
+    @InjectRepository(Building)
+    private buildingRepository: Repository<Building>,
+  ) {}
   private buildings = [
     {
       id: 1,
@@ -29,45 +36,25 @@ export class BuildingsService {
   ];
 
   create(createBuildingDto: CreateBuildingDto) {
-    const newBuilding = { id: this.buildings.length + 1, ...createBuildingDto };
-    this.buildings.push(newBuilding);
-    return 'Add new building successfully';
+    return this.buildingRepository.save(createBuildingDto);
   }
 
   findAll() {
-    return this.buildings;
+    return this.buildingRepository.find();
   }
 
   findOne(id: number) {
     if (id > this.buildings.length || id < 1) {
       return 'Id is not valid';
     }
-    const thisBuilding = this.buildings.find((building) => building.id === id);
-    if (thisBuilding) {
-      return thisBuilding;
-    }
-    return 'Building not found';
+    return this.buildingRepository.findOneBy({ id });
   }
 
   update(id: number, updateBuildingDto: UpdateBuildingDto) {
-    const thisBuilding = this.buildings.find((building) => building.id === id);
-    if (thisBuilding) {
-      const updatedBuilding = {
-        ...thisBuilding,
-        ...updateBuildingDto,
-      };
-      this.buildings[id - 1] = updatedBuilding;
-      return 'Update building successfully';
-    }
-    return 'Building not found';
+    return this.buildingRepository.update(id, updateBuildingDto);
   }
 
   remove(id: number) {
-    const thisBuilding = this.buildings.find((building) => building.id === id);
-    if (thisBuilding) {
-      this.buildings.splice(id - 1, 1);
-      return 'Remove building successfully';
-    }
-    return 'Building not found';
+    return this.buildingRepository.delete(id);
   }
 }

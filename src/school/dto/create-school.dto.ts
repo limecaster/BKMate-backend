@@ -23,7 +23,7 @@ export class CreateSchoolDto {
     {
       id: number;
       name: string;
-      rank: number;
+      rank: string;
       year: number;
       description: string;
       image: string;

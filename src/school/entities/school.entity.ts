@@ -1,6 +1,8 @@
-import { PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, OneToMany, Entity } from 'typeorm';
 import { SchoolAchievement } from './school-achivement.entity';
 import { SchoolAcademicProgram } from './school-academicProgram.entity';
+
+@Entity()
 export class School {
   @PrimaryGeneratedColumn()
   id: number;

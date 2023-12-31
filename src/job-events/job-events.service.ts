@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateJobEventDto } from './dto/create-job-event.dto';
 import { UpdateJobEventDto } from './dto/update-job-event.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JobEvent } from './entities/job-event.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class JobEventsService {
+  constructor(
+    @InjectRepository(JobEvent)
+    private jobEventRepository: Repository<JobEvent>,
+  ) {}
   private readonly jobEvents = [
     {
       id: 1,
@@ -72,23 +79,17 @@ export class JobEventsService {
   ];
 
   create(createJobEventDto: CreateJobEventDto) {
-    const newJobEvent = {
-      id: this.jobEvents.length + 1,
-      ...createJobEventDto,
-    };
-    this.jobEvents.push(newJobEvent);
+    const newJobEvent = createJobEventDto;
+    this.jobEventRepository.save(newJobEvent);
     return 'Add new jobEvent successfully';
   }
 
   findAll() {
-    return this.jobEvents;
+    return this.jobEventRepository.find();
   }
 
   findOne(id: number) {
-    if (id > this.jobEvents.length || id < 1) {
-      return 'Id is not valid';
-    }
-    const thisJobEvent = this.jobEvents.find((jobEvent) => jobEvent.id === id);
+    const thisJobEvent = this.jobEventRepository.findOneBy({ id });
     if (thisJobEvent) {
       return thisJobEvent;
     }
@@ -96,24 +97,10 @@ export class JobEventsService {
   }
 
   update(id: number, updateJobEventDto: UpdateJobEventDto) {
-    const thisJobEvent = this.jobEvents.find((jobEvent) => jobEvent.id === id);
-    if (thisJobEvent) {
-      const updatedJobEvent = {
-        ...thisJobEvent,
-        ...updateJobEventDto,
-      };
-      this.jobEvents[id - 1] = updatedJobEvent;
-      return 'Update jobEvent successfully';
-    }
-    return 'JobEvent not found';
+    return this.jobEventRepository.update(id, updateJobEventDto);
   }
 
   remove(id: number) {
-    const thisJobEvent = this.jobEvents.find((jobEvent) => jobEvent.id === id);
-    if (thisJobEvent) {
-      this.jobEvents.splice(id - 1, 1);
-      return 'Delete jobEvent successfully';
-    }
-    return 'JobEvent not found';
+    return this.jobEventRepository.delete(id);
   }
 }

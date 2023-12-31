@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClubEventDto } from './dto/create-club-event.dto';
 import { UpdateClubEventDto } from './dto/update-club-event.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ClubEvent } from './entities/club-event.entity';
 
 @Injectable()
 export class ClubEventsService {
+  constructor(
+    @InjectRepository(ClubEvent)
+    private clubEventRepository: Repository<ClubEvent>,
+  ) {}
   private clubEvents = [
     {
       id: 1,
@@ -55,38 +62,22 @@ export class ClubEventsService {
     },
   ];
   create(createClubEventDto: CreateClubEventDto) {
-    const newClubEvent = {
-      id: this.clubEvents.length + 1,
-      ...createClubEventDto,
-    };
-    this.clubEvents.push(newClubEvent);
-    return 'This action adds a new clubEvent';
+    return this.clubEventRepository.save(createClubEventDto);
   }
 
   findAll() {
-    return this.clubEvents;
+    return this.clubEventRepository.find();
   }
 
   findOne(id: number) {
-    return this.clubEvents.find((clubEvent) => clubEvent.id === id);
+    return this.clubEventRepository.findOneBy({ id });
   }
 
   update(id: number, updateClubEventDto: UpdateClubEventDto) {
-    const thisClubEvent = this.clubEvents.find(
-      (clubEvent) => clubEvent.id === id,
-    );
-    if (thisClubEvent) {
-      const updatedClubEvent = {
-        ...thisClubEvent,
-        ...updateClubEventDto,
-      };
-      this.clubEvents[id] = updatedClubEvent;
-      return 'Update clubEvent successfully';
-    }
-    return 'Club event is not found';
+    return this.clubEventRepository.update({ id }, updateClubEventDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} clubEvent`;
+    return this.clubEventRepository.delete({ id });
   }
 }

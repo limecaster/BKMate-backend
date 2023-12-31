@@ -9,7 +9,16 @@ export class SchoolAchievement {
   name: string;
 
   @Column()
+  rank: string;
+
+  @Column()
+  year: number;
+
+  @Column()
   description: string;
+
+  @Column()
+  image: string;
 
   @ManyToOne(() => School, (school) => school.achivement)
   school: School;

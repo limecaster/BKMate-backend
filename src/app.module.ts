@@ -28,11 +28,13 @@ import { ClubEventsService } from './club-events/club-events.service';
 import { SchoolService } from './school/school.service';
 
 import { Users } from './users/entities/user.entity';
-import { Club } from './clubs/entities/club.entity';
+import { Clubs } from './clubs/entities/club.entity';
 import { ClubEvent } from './club-events/entities/club-event.entity';
 import { School } from './school/entities/school.entity';
 import { SchoolAchievement } from './school/entities/school-achivement.entity';
 import { SchoolAcademicProgram } from './school/entities/school-academicProgram.entity';
+import { JobEvent } from './job-events/entities/job-event.entity';
+import { Building } from './buildings/entities/building.entity';
 
 @Module({
   imports: [
@@ -45,21 +47,30 @@ import { SchoolAcademicProgram } from './school/entities/school-academicProgram.
     ClubEventsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres://pencilsoldier:Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3@dpg-cm87j3un7f5s73cf11l0-a/bkmate',
+      host: 'dpg-cm87j3un7f5s73cf11l0-a.singapore-postgres.render.com',
       port: 5432,
       username: 'pencilsoldier',
       password: 'Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3',
+      url: 'postgres://pencilsoldier:Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3@dpg-cm87j3un7f5s73cf11l0-a.singapore-postgres.render.com/bkmate',
       database: 'bkmate',
       synchronize: true, // Auto-create database schema (for development only)
       logging: true, // Enable logging (for development only)
       entities: [
         Users,
-        Club,
+        Clubs,
         ClubEvent,
+        JobEvent,
+        Building,
         School,
         SchoolAchievement,
         SchoolAcademicProgram,
       ],
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     }),
   ],
   controllers: [
