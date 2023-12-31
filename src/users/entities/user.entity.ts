@@ -1,6 +1,6 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 

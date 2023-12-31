@@ -2,14 +2,14 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { Users } from './entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(Users)
+    private UsersRepository: Repository<Users>,
   ) {}
 
   private users = [
@@ -47,7 +47,7 @@ export class UsersService {
       isDeleted: false,
     },
   ];
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     if (!createUserDto.email || !createUserDto.password) {
       throw new HttpException(
         'Email and password should not be empty.',
@@ -55,12 +55,13 @@ export class UsersService {
       );
     }
 
-    const user = this.usersRepository.findOneBy({ email: createUserDto.email });
+    const user = this.UsersRepository.findOneBy({ email: createUserDto.email });
     if (user) {
       throw new HttpException('Email already exists.', HttpStatus.BAD_REQUEST);
     }
+    const latestId = await this.UsersRepository.count();
     const newUser = {
-      id: this.users.length + 1,
+      id: latestId + 1,
       name: 'Nguyen Van A',
       studentId: '20000000',
       email: createUserDto.email,
@@ -70,21 +71,21 @@ export class UsersService {
       password: createUserDto.password,
       isDeleted: false,
     };
-    this.usersRepository.save(newUser);
+    this.UsersRepository.save(newUser);
     return 'Add user successfully';
   }
 
-  async findAll(): Promise<User[] | undefined> {
+  async findAll(): Promise<Users[] | undefined> {
     // return this.users;
-    return this.usersRepository.find();
+    return await this.UsersRepository.find();
   }
 
-  async findOne(id: number): Promise<User | undefined> {
-    return this.users.find((user) => user.id === id && user.isDeleted == false);
+  async findOne(id: number): Promise<Users | undefined> {
+    return await this.UsersRepository.findOneBy({ id: id, isDeleted: false });
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOneBy({
+  async findOneByEmail(email: string): Promise<Users | undefined> {
+    return await this.UsersRepository.findOneBy({
       email: email,
       isDeleted: false,
     });
@@ -97,24 +98,27 @@ export class UsersService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const user = this.usersRepository.findOneBy({
+    const user = await this.UsersRepository.findOneBy({
       id: id,
       isDeleted: false,
     });
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
-    this.usersRepository.update(id, updateUserDto);
+    this.UsersRepository.update(id, updateUserDto);
 
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    const user = this.usersRepository.findOneBy({ id: id, isDeleted: false });
+  async remove(id: number) {
+    const user = await this.UsersRepository.findOneBy({
+      id: id,
+      isDeleted: false,
+    });
     if (!user) {
       return 'User not found';
     }
-    this.usersRepository.update(id, { isDeleted: true });
+    this.UsersRepository.update(id, { isDeleted: true });
     return `User which is = #${id} is deleted`;
   }
 }
