@@ -11,9 +11,7 @@ export class AuthService {
   ) {}
 
   async signIn(createUserDto: CreateUserDto): Promise<any> {
-    console.log(createUserDto);
     const user = await this.usersService.findOneByEmail(createUserDto.email);
-    console.log(user);
     if (!user) {
       throw new UnauthorizedException('User not found');
     }

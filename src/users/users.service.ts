@@ -58,7 +58,6 @@ export class UsersService {
     const user = await this.UsersRepository.findOneBy({
       email: createUserDto.email,
     });
-    console.log('user', user);
     if (user) {
       throw new HttpException('Email already exists.', HttpStatus.BAD_REQUEST);
     }
