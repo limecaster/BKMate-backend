@@ -14,6 +14,9 @@ export class FunctionalBuilding {
   @Column()
   image: string;
 
-  @Column()
-  location: string;
+  @Column({ nullable: true })
+  latitude: string;
+
+  @Column({ nullable: true })
+  longitude: string;
 }

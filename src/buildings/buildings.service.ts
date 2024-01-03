@@ -36,7 +36,6 @@ export class BuildingsService {
   }
 
   getAllClassrooms() {
-    console.log(this.classroomRepository.metadata);
     return this.classroomRepository.find();
   }
 
@@ -59,7 +58,8 @@ export class BuildingsService {
       classroomEntity.type = classroom.type;
       classroomEntity.description = classroom.description;
       classroomEntity.image = classroom.image;
-      classroomEntity.location = classroom.location;
+      classroomEntity.latitude = classroom.latitude;
+      classroomEntity.longitude = classroom.longitude;
       classroomEntity.studyBuilding = studyBuilding;
 
       this.classroomRepository.save(classroomEntity);
@@ -73,7 +73,18 @@ export class BuildingsService {
     return this.studyBuildingRepository
       .findOne({ where: { id }, relations: ['classrooms'] })
       .then(async (studyBuilding) => {
-        const classroom = await this.classroomRepository.save(classroomDto);
+        console.log('studyBuilding', studyBuilding);
+        console.log('classroomDto', classroomDto);
+        const classroom = new Classroom();
+        classroom.name = classroomDto.name;
+        classroom.title = classroomDto.title;
+        classroom.type = classroomDto.type;
+        classroom.description = classroomDto.description;
+        classroom.image = classroomDto.image;
+        classroom.latitude = classroomDto.latitude;
+        classroom.longitude = classroomDto.longitude;
+        classroom.studyBuilding = studyBuilding;
+        await this.classroomRepository.save(classroom);
         studyBuilding.classrooms.push(classroom);
         return this.studyBuildingRepository.save(studyBuilding);
       });
@@ -113,11 +124,27 @@ export class BuildingsService {
   }
 
   createFunctionalBuilding(functionalBuildingDto: FunctionalBuildingDto) {
-    return this.functionalBuildingRepository.save(functionalBuildingDto);
+    const functionalBuilding = new FunctionalBuilding();
+    functionalBuilding.name = functionalBuildingDto.name;
+    functionalBuilding.description = functionalBuildingDto.description;
+    functionalBuilding.image = functionalBuildingDto.image;
+    functionalBuilding.latitude = functionalBuildingDto.latitude;
+    functionalBuilding.longitude = functionalBuildingDto.longitude;
+
+    return this.functionalBuildingRepository.save(functionalBuilding);
   }
 
   createClassroom(classroomDto: ClassroomDto) {
-    return this.classroomRepository.save(classroomDto);
+    const classroom = new Classroom();
+    classroom.name = classroomDto.name;
+    classroom.title = classroomDto.title;
+    classroom.type = classroomDto.type;
+    classroom.description = classroomDto.description;
+    classroom.image = classroomDto.image;
+    classroom.latitude = classroomDto.latitude;
+    classroom.longitude = classroomDto.longitude;
+
+    return this.classroomRepository.save(classroom);
   }
 
   updateStudyBuilding(id: number, studyBuildingDto: StudyBuildingDto) {

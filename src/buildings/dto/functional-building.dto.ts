@@ -42,8 +42,17 @@ export class FunctionalBuildingDto {
   @IsNotEmpty()
   @ApiProperty({
     type: String,
-    example: 'Đông Hòa, Dĩ An, Bình Dương',
-    description: 'Location of functional building',
+    example: '10.8705',
+    description: 'Latitude of functional building',
   })
-  location: string;
+  latitude: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: String,
+    example: '106.803',
+    description: 'Longitude of functional building',
+  })
+  longitude: string;
 }

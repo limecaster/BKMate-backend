@@ -27,8 +27,11 @@ export class Classroom {
   @Column()
   image: string;
 
-  @Column()
-  location: string;
+  @Column({ nullable: true })
+  latitude: string;
+
+  @Column({ nullable: true })
+  longitude: string;
 
   @ManyToOne(() => StudyBuilding, (studyBuilding) => studyBuilding.classrooms)
   @JoinColumn({ name: 'studyBuildingId' })

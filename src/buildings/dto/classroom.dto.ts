@@ -51,8 +51,17 @@ export class ClassroomDto {
   @IsNotEmpty()
   @ApiProperty({
     type: String,
-    example: 'Đông Hòa, Dĩ An, Bình Dương',
-    description: 'Location of building',
+    example: '10.8705',
+    description: 'Latitude of building',
   })
-  location: string;
+  latitude: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: String,
+    example: '106.8034',
+    description: 'Longitude of building',
+  })
+  longitude: string;
 }
