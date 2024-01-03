@@ -159,19 +159,22 @@ export class SchoolService {
       school_academicPrograms.push(school_academicProgram);
     });
 
-    school.achivement = school_achivements;
+    school.achievements = school_achivements;
     school.academicPrograms = school_academicPrograms;
     return this.SchoolRepository.save(school);
   }
 
   async find() {
-    const school = await this.SchoolRepository.find();
-    const school_academicPrograms =
-      await this.SchoolAcademicProgramRepository.find();
-    const school_achivements = await this.SchoolAchivementRepository.find();
-    school[0].achivement = school_achivements;
-    school[0].academicPrograms = school_academicPrograms;
-    return school;
+    // const school = await this.SchoolRepository.find();
+    // const school_academicPrograms =
+    //   await this.SchoolAcademicProgramRepository.find();
+    // const school_achivements = await this.SchoolAchivementRepository.find();
+    // school[0].achivement = school_achivements;
+    // school[0].academicPrograms = school_academicPrograms;
+    // return school;
+    return this.SchoolRepository.find({
+      relations: ['achievements', 'academicPrograms'],
+    });
   }
 
   update(updateSchoolDto: UpdateSchoolDto) {

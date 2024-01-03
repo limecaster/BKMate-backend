@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-export class Building {
+export class FunctionalBuilding {
   @PrimaryGeneratedColumn()
   id: number;
 

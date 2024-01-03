@@ -18,13 +18,13 @@ export class School {
 
   @OneToMany(
     () => SchoolAchievement,
-    (schoolAchievement) => schoolAchievement.id,
+    (schoolAchievement) => schoolAchievement.school,
   )
-  achivement: SchoolAchievement[];
+  achievements: SchoolAchievement[];
 
   @OneToMany(
     () => SchoolAcademicProgram,
-    (schoolAcademicProgram) => schoolAcademicProgram.id,
+    (schoolAcademicProgram) => schoolAcademicProgram.school,
   )
   academicPrograms: SchoolAcademicProgram[];
 }

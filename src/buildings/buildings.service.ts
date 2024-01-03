@@ -1,60 +1,149 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBuildingDto } from './dto/create-building.dto';
-import { UpdateBuildingDto } from './dto/update-building.dto';
+import { StudyBuildingDto } from './dto/study-building.dto';
+import { FunctionalBuildingDto } from './dto/functional-building.dto';
+import { ClassroomDto } from './dto/classroom.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Building } from './entities/building.entity';
 import { Repository } from 'typeorm';
+import { Classroom } from './entities/classroom.entity';
+import { StudyBuilding } from './entities/study-building.entity';
+import { FunctionalBuilding } from './entities/functional-building.entity';
 
 @Injectable()
 export class BuildingsService {
   constructor(
-    @InjectRepository(Building)
-    private buildingRepository: Repository<Building>,
+    @InjectRepository(Classroom)
+    private classroomRepository: Repository<Classroom>,
+    @InjectRepository(StudyBuilding)
+    private studyBuildingRepository: Repository<StudyBuilding>,
+    @InjectRepository(FunctionalBuilding)
+    private functionalBuildingRepository: Repository<FunctionalBuilding>,
   ) {}
-  private buildings = [
-    {
-      id: 1,
-      name: 'BK-B1',
-      description: 'BK-B1 is the first building of BK',
-      image: 'https://www.uit.edu.vn/sites/vi/files/banner_0.jpg',
-      location: 'Dai hoc Quoc gia TPHCM',
-    },
-    {
-      id: 2,
-      name: 'BK-B2',
-      description: 'BK-B2 is the second building of BK',
-      image: 'https://www.uit.edu.vn/sites/vi/files/banner_0.jpg',
-      location: 'Dai hoc Quoc gia TPHCM',
-    },
-    {
-      id: 3,
-      name: 'BK-B3',
-      description: 'BK-B3 is the third building of BK',
-      image: 'https://www.uit.edu.vn/sites/vi/files/banner_0.jpg',
-      location: 'Dai hoc Quoc gia TPHCM',
-    },
-  ];
 
-  create(createBuildingDto: CreateBuildingDto) {
-    return this.buildingRepository.save(createBuildingDto);
+  getAllStudyBuildings() {
+    return this.studyBuildingRepository.find();
   }
 
-  findAll() {
-    return this.buildingRepository.find();
+  getAllFunctionalBuildings() {
+    return this.functionalBuildingRepository.find();
   }
 
-  findOne(id: number) {
-    if (id > this.buildings.length || id < 1) {
-      return 'Id is not valid';
+  getStudyBuilding(id: number) {
+    return this.studyBuildingRepository.findOneBy({ id });
+  }
+
+  getFunctionalBuilding(id: number) {
+    return this.functionalBuildingRepository.findOneBy({ id });
+  }
+
+  getAllClassrooms() {
+    console.log(this.classroomRepository.metadata);
+    return this.classroomRepository.find();
+  }
+
+  getClassroom(id: number) {
+    return this.classroomRepository.findOneBy({ id });
+  }
+
+  createStudyBuilding(studyBuildingDto: StudyBuildingDto) {
+    const studyBuilding = new StudyBuilding();
+
+    studyBuilding.name = studyBuildingDto.name;
+    studyBuilding.image = studyBuildingDto.image;
+    this.studyBuildingRepository.save(studyBuilding);
+
+    studyBuildingDto.classRoom.forEach((classroom) => {
+      const classroomEntity = new Classroom();
+
+      classroomEntity.name = classroom.name;
+      classroomEntity.title = classroom.title;
+      classroomEntity.type = classroom.type;
+      classroomEntity.description = classroom.description;
+      classroomEntity.image = classroom.image;
+      classroomEntity.location = classroom.location;
+      classroomEntity.studyBuilding = studyBuilding;
+
+      this.classroomRepository.save(classroomEntity);
+      console.log('classroomEntity', this.classroomRepository.find());
+    });
+
+    return studyBuilding;
+  }
+
+  async addClassroomToStudyBuilding(id: number, classroomDto: ClassroomDto) {
+    return this.studyBuildingRepository
+      .findOne({ where: { id }, relations: ['classrooms'] })
+      .then(async (studyBuilding) => {
+        const classroom = await this.classroomRepository.save(classroomDto);
+        studyBuilding.classrooms.push(classroom);
+        return this.studyBuildingRepository.save(studyBuilding);
+      });
+  }
+
+  async getClassroomsOfStudyBuilding(id: number) {
+    return this.studyBuildingRepository.find({
+      where: { id },
+      relations: ['classrooms'],
+    });
+  }
+
+  async getClassroomOfStudyBuilding(id1: number, id2: number) {
+    const studyBuildingContain = await this.studyBuildingRepository.findOne({
+      where: { id: id1 },
+      relations: ['classrooms'],
+    });
+
+    if (studyBuildingContain) {
+      const classroom = studyBuildingContain.classrooms.find((classroom) => {
+        return classroom.id === id2;
+      });
+
+      return classroom;
+    } else {
+      return null;
     }
-    return this.buildingRepository.findOneBy({ id });
   }
 
-  update(id: number, updateBuildingDto: UpdateBuildingDto) {
-    return this.buildingRepository.update(id, updateBuildingDto);
+  async deleteClassroomsOfStudyBuilding(id: number) {
+    return this.studyBuildingRepository
+      .findOneBy({ id })
+      .then((studyBuilding) => {
+        studyBuilding.classrooms = [];
+        return this.studyBuildingRepository.save(studyBuilding);
+      });
   }
 
-  remove(id: number) {
-    return this.buildingRepository.delete(id);
+  createFunctionalBuilding(functionalBuildingDto: FunctionalBuildingDto) {
+    return this.functionalBuildingRepository.save(functionalBuildingDto);
+  }
+
+  createClassroom(classroomDto: ClassroomDto) {
+    return this.classroomRepository.save(classroomDto);
+  }
+
+  updateStudyBuilding(id: number, studyBuildingDto: StudyBuildingDto) {
+    return this.studyBuildingRepository.update(id, studyBuildingDto);
+  }
+
+  updateFunctionalBuilding(
+    id: number,
+    functionalBuildingDto: FunctionalBuildingDto,
+  ) {
+    return this.functionalBuildingRepository.update(id, functionalBuildingDto);
+  }
+
+  updateClassroom(id: number, classroomDto: ClassroomDto) {
+    return this.classroomRepository.update(id, classroomDto);
+  }
+
+  deleteStudyBuilding(id: number) {
+    return this.studyBuildingRepository.delete(id);
+  }
+
+  deleteFunctionalBuilding(id: number) {
+    return this.functionalBuildingRepository.delete(id);
+  }
+
+  deleteClassroom(id: number) {
+    return this.classroomRepository.delete(id);
   }
 }

@@ -34,7 +34,11 @@ import { School } from './school/entities/school.entity';
 import { SchoolAchievement } from './school/entities/school-achivement.entity';
 import { SchoolAcademicProgram } from './school/entities/school-academicProgram.entity';
 import { JobEvent } from './job-events/entities/job-event.entity';
-import { Building } from './buildings/entities/building.entity';
+import { Classroom } from './buildings/entities/classroom.entity';
+import { FunctionalBuilding } from './buildings/entities/functional-building.entity';
+import { StudyBuilding } from './buildings/entities/study-building.entity';
+
+import { QrCodeModule } from './qr-code/qr-code.module';
 
 @Module({
   imports: [
@@ -60,10 +64,12 @@ import { Building } from './buildings/entities/building.entity';
         Clubs,
         ClubEvent,
         JobEvent,
-        Building,
         School,
         SchoolAchievement,
         SchoolAcademicProgram,
+        Classroom,
+        FunctionalBuilding,
+        StudyBuilding,
       ],
       ssl: true,
       extra: {
@@ -72,6 +78,7 @@ import { Building } from './buildings/entities/building.entity';
         },
       },
     }),
+    QrCodeModule,
   ],
   controllers: [
     AppController,

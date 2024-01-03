@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { School } from './school.entity';
 @Entity()
 export class SchoolAchievement {
@@ -20,6 +26,7 @@ export class SchoolAchievement {
   @Column()
   image: string;
 
-  @ManyToOne(() => School, (school) => school.achivement)
+  @ManyToOne(() => School, (school) => school.achievements)
+  @JoinColumn({ name: 'schoolId' })
   school: School;
 }
