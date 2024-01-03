@@ -38,8 +38,6 @@ import { Classroom } from './buildings/entities/classroom.entity';
 import { FunctionalBuilding } from './buildings/entities/functional-building.entity';
 import { StudyBuilding } from './buildings/entities/study-building.entity';
 
-import { QrCodeModule } from './qr-code/qr-code.module';
-
 @Module({
   imports: [
     BuildingsModule,
@@ -78,7 +76,6 @@ import { QrCodeModule } from './qr-code/qr-code.module';
         },
       },
     }),
-    QrCodeModule,
   ],
   controllers: [
     AppController,
