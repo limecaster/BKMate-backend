@@ -49,11 +49,11 @@ import { StudyBuilding } from './buildings/entities/study-building.entity';
     ClubEventsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'dpg-cm87j3un7f5s73cf11l0-a.singapore-postgres.render.com',
+      host: 'dpg-cmget7ol5elc73fskcsg-a.singapore-postgres.render.com',
       port: 5432,
       username: 'pencilsoldier',
-      password: 'Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3',
-      url: 'postgres://pencilsoldier:Fc0PkKwWG3o3MR44ouJnn7GbTmVvVvs3@dpg-cm87j3un7f5s73cf11l0-a.singapore-postgres.render.com/bkmate',
+      password: 'A2VihN81opnOOlcuX30PzVsSwG4xXhjb',
+      url: 'postgres://pencilsoldier:A2VihN81opnOOlcuX30PzVsSwG4xXhjb@dpg-cmget7ol5elc73fskcsg-a.oregon-postgres.render.com/bkmate_ko3o',
       database: 'bkmate',
       synchronize: true, // Auto-create database schema (for development only)
       logging: true, // Enable logging (for development only)
